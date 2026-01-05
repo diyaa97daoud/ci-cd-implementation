@@ -1,6 +1,5 @@
 """Tests for task models."""
 
-import pytest
 from datetime import datetime, timedelta
 from tasklib.models import Task, Priority, Status
 
