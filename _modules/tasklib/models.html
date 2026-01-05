@@ -85,6 +85,7 @@
 <a class="viewcode-back" href="../../api.html#tasklib.models.Priority">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Priority</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Task priority levels.&quot;&quot;&quot;</span>
+
     <span class="n">LOW</span> <span class="o">=</span> <span class="s2">&quot;low&quot;</span>
     <span class="n">MEDIUM</span> <span class="o">=</span> <span class="s2">&quot;medium&quot;</span>
     <span class="n">HIGH</span> <span class="o">=</span> <span class="s2">&quot;high&quot;</span>
@@ -96,6 +97,7 @@
 <a class="viewcode-back" href="../../api.html#tasklib.models.Status">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Status</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Task status values.&quot;&quot;&quot;</span>
+
     <span class="n">TODO</span> <span class="o">=</span> <span class="s2">&quot;todo&quot;</span>
     <span class="n">IN_PROGRESS</span> <span class="o">=</span> <span class="s2">&quot;in_progress&quot;</span>
     <span class="n">COMPLETED</span> <span class="o">=</span> <span class="s2">&quot;completed&quot;</span>
@@ -109,7 +111,7 @@
 <span class="k">class</span><span class="w"> </span><span class="nc">Task</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Represents a task with title, description, priority, status, and dates.</span>
-<span class="sd">    </span>
+
 <span class="sd">    Attributes:</span>
 <span class="sd">        id: Unique identifier for the task</span>
 <span class="sd">        title: Task title</span>
@@ -120,7 +122,7 @@
 <span class="sd">        created_at: Timestamp when task was created</span>
 <span class="sd">        updated_at: Timestamp when task was last updated</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    
+
     <span class="n">title</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
     <span class="n">priority</span><span class="p">:</span> <span class="n">Priority</span> <span class="o">=</span> <span class="n">Priority</span><span class="o">.</span><span class="n">MEDIUM</span>
@@ -129,36 +131,36 @@
     <span class="nb">id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">()))</span>
     <span class="n">created_at</span><span class="p">:</span> <span class="n">datetime</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">)</span>
     <span class="n">updated_at</span><span class="p">:</span> <span class="n">datetime</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">)</span>
-    
+
 <div class="viewcode-block" id="Task.to_dict">
 <a class="viewcode-back" href="../../api.html#tasklib.models.Task.to_dict">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert task to dictionary for JSON serialization.&quot;&quot;&quot;</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">asdict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;priority&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">priority</span><span class="o">.</span><span class="n">value</span>
-        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;status&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">status</span><span class="o">.</span><span class="n">value</span>
-        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;created_at&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">created_at</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
-        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;updated_at&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">updated_at</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
+        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;priority&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">priority</span><span class="o">.</span><span class="n">value</span>
+        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">status</span><span class="o">.</span><span class="n">value</span>
+        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;created_at&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">created_at</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
+        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;updated_at&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">updated_at</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">due_date</span><span class="p">:</span>
-            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;due_date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">due_date</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
+            <span class="n">data</span><span class="p">[</span><span class="s2">&quot;due_date&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">due_date</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">data</span></div>
 
-    
+
 <div class="viewcode-block" id="Task.from_dict">
 <a class="viewcode-back" href="../../api.html#tasklib.models.Task.from_dict">[docs]</a>
     <span class="nd">@classmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">from_dict</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;Task&#39;</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_dict</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Task&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create task from dictionary.&quot;&quot;&quot;</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;priority&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Priority</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;priority&#39;</span><span class="p">])</span>
-        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;status&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Status</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;status&#39;</span><span class="p">])</span>
-        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;created_at&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">fromisoformat</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;created_at&#39;</span><span class="p">])</span>
-        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;updated_at&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">fromisoformat</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;updated_at&#39;</span><span class="p">])</span>
-        <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;due_date&#39;</span><span class="p">):</span>
-            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;due_date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">fromisoformat</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;due_date&#39;</span><span class="p">])</span>
+        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;priority&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Priority</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;priority&quot;</span><span class="p">])</span>
+        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Status</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">])</span>
+        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;created_at&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">fromisoformat</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;created_at&quot;</span><span class="p">])</span>
+        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;updated_at&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">fromisoformat</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;updated_at&quot;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;due_date&quot;</span><span class="p">):</span>
+            <span class="n">data</span><span class="p">[</span><span class="s2">&quot;due_date&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">fromisoformat</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;due_date&quot;</span><span class="p">])</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="o">**</span><span class="n">data</span><span class="p">)</span></div>
 
-    
+
 <div class="viewcode-block" id="Task.is_overdue">
 <a class="viewcode-back" href="../../api.html#tasklib.models.Task.is_overdue">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">is_overdue</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
