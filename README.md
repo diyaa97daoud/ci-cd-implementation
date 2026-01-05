@@ -1,6 +1,6 @@
 # TaskLib - Task Management Library
 
-[![CI](https://github.com/YOUR_USERNAME/tasklib/workflows/CI/badge.svg)](https://github.com/YOUR_USERNAME/tasklib/actions)
+[![CI](https://github.com/diyaa97daoud/ci-cd-implementation/workflows/CI/badge.svg)](https://github.com/diyaa97daoud/ci-cd-implementation/actions)
 [![Python Versions](https://img.shields.io/badge/python-3.9%20|%203.10%20|%203.11-blue)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
@@ -67,8 +67,8 @@ high_priority = manager.filter_tasks(priority=Priority.HIGH)
 
 ```bash
 # Clone repository
-git clone https://github.com/YOUR_USERNAME/tasklib.git
-cd tasklib
+git clone https://github.com/diyaa97daoud/ci-cd-implementation.git
+cd ci-cd-implementation
 
 # Create virtual environment
 python -m venv venv
@@ -116,7 +116,7 @@ git add .
 git commit -m "feat: initial project setup with full CI/CD pipeline"
 
 # Create repository on GitHub, then:
-git remote add origin https://github.com/YOUR_USERNAME/tasklib.git
+git remote add origin https://github.com/diyaa97daoud/ci-cd-implementation.git
 git branch -M main
 git push -u origin main
 ```
@@ -181,7 +181,7 @@ git push origin v0.1.0
 - **Trigger:** Push to main/master branch only
 - **Builds:** Sphinx documentation from RST files
 - **Deploys:** Automatically to GitHub Pages
-- **URL:** `https://YOUR_USERNAME.github.io/tasklib/`
+- **URL:** `https://diyaa97daoud.github.io/ci-cd-implementation/`
 
 ---
 
@@ -267,12 +267,12 @@ git commit -m "test: add tests for priority filtering"
 
 ## 🔗 After Deployment URLs
 
-Replace `YOUR_USERNAME` with your GitHub username:
+Your deployed project URLs:
 
-- **Repository:** `https://github.com/YOUR_USERNAME/tasklib`
-- **Actions:** `https://github.com/YOUR_USERNAME/tasklib/actions`
-- **Releases:** `https://github.com/YOUR_USERNAME/tasklib/releases`
-- **Documentation:** `https://YOUR_USERNAME.github.io/tasklib/`
+- **Repository:** `https://github.com/diyaa97daoud/ci-cd-implementation`
+- **Actions:** `https://github.com/diyaa97daoud/ci-cd-implementation/actions`
+- **Releases:** `https://github.com/diyaa97daoud/ci-cd-implementation/releases`
+- **Documentation:** `https://diyaa97daoud.github.io/ci-cd-implementation/`
 
 ---
 
