@@ -1,0 +1,124 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Create Release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Fetch all history for changelog generation
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+          pip install build wheel
+
+      - name: Run tests
+        run: |
+          pytest --cov=tasklib --cov-report=xml --cov-report=html --cov-report=term-missing
+
+      - name: Run analysis
+        run: |
+          black --check src/ tests/ || true
+          flake8 src/ tests/ --max-line-length=100 --extend-ignore=E203,W503 || true
+          pylint src/ --max-line-length=100 --disable=C0114,C0115,C0116 || true
+          bandit -r src/ -f json -o bandit-report.json || true
+
+      - name: Build package
+        run: python -m build
+
+      - name: Generate changelog
+        id: changelog
+        run: |
+          # Get the previous tag
+          PREVIOUS_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
+          CURRENT_TAG=${GITHUB_REF#refs/tags/}
+
+          echo "## Release ${CURRENT_TAG}" > CHANGELOG.md
+          echo "" >> CHANGELOG.md
+          echo "**Release Date:** $(date +'%Y-%m-%d')" >> CHANGELOG.md
+          echo "" >> CHANGELOG.md
+
+          if [ -z "$PREVIOUS_TAG" ]; then
+            echo "### All Changes" >> CHANGELOG.md
+            echo "" >> CHANGELOG.md
+            git log --pretty=format:"- %s (%h)" >> CHANGELOG.md
+          else
+            echo "### Changes since ${PREVIOUS_TAG}" >> CHANGELOG.md
+            echo "" >> CHANGELOG.md
+            
+            # Group commits by type
+            echo "#### Features" >> CHANGELOG.md
+            git log ${PREVIOUS_TAG}..HEAD --pretty=format:"%s (%h)" --grep="^feat" >> CHANGELOG.md || echo "- No new features" >> CHANGELOG.md
+            echo "" >> CHANGELOG.md
+            
+            echo "#### Bug Fixes" >> CHANGELOG.md
+            git log ${PREVIOUS_TAG}..HEAD --pretty=format:"- %s (%h)" --grep="^fix" >> CHANGELOG.md || echo "- No bug fixes" >> CHANGELOG.md
+            echo "" >> CHANGELOG.md
+            
+            echo "#### Documentation" >> CHANGELOG.md
+            git log ${PREVIOUS_TAG}..HEAD --pretty=format:"- %s (%h)" --grep="^docs" >> CHANGELOG.md || echo "- No documentation changes" >> CHANGELOG.md
+            echo "" >> CHANGELOG.md
+            
+            echo "#### Other Changes" >> CHANGELOG.md
+            git log ${PREVIOUS_TAG}..HEAD --pretty=format:"- %s (%h)" --invert-grep --grep="^feat" --grep="^fix" --grep="^docs" >> CHANGELOG.md || echo "- No other changes" >> CHANGELOG.md
+            echo "" >> CHANGELOG.md
+          fi
+
+          echo "### Statistics" >> CHANGELOG.md
+          echo "" >> CHANGELOG.md
+          if [ -z "$PREVIOUS_TAG" ]; then
+            echo "- Total commits: $(git rev-list --count HEAD)" >> CHANGELOG.md
+          else
+            echo "- Commits in this release: $(git rev-list --count ${PREVIOUS_TAG}..HEAD)" >> CHANGELOG.md
+            echo "- Files changed: $(git diff --name-only ${PREVIOUS_TAG}..HEAD | wc -l)" >> CHANGELOG.md
+          fi
+
+          # Set output for release body
+          echo "CHANGELOG<<EOF" >> $GITHUB_ENV
+          cat CHANGELOG.md >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          body: ${{ env.CHANGELOG }}
+          files: |
+            dist/*
+            coverage.xml
+            htmlcov/**
+            bandit-report.json
+          draft: false
+          prerelease: false
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload release artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-artifacts-${{ github.ref_name }}
+          path: |
+            dist/
+            htmlcov/
+            coverage.xml
+            bandit-report.json
+            CHANGELOG.md
